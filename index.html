@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sporticx Ticket</title>
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  background: #f4f6f8;
+}
+
+/* 🔥 BANNER AUTO LOAD FILE banner.png */
+.banner {
+  height: 190px;
+  border-radius: 20px;
+  margin: 16px;
+  overflow: hidden;
+  background: url('banner.png') center/cover no-repeat;
+}
+
+/* CONTAINER */
+.container {
+  padding: 16px;
+  margin-bottom: 140px;
+}
+
+h2 {
+  margin-bottom: 20px;
+}
+
+/* CARD */
+.ticket-card {
+  background: #d7f1f1;
+  border-radius: 20px;
+  padding: 16px;
+  margin-bottom: 20px;
+  border: 2px solid #4fb3b3;
+}
+
+select {
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  margin-top: 6px;
+}
+
+hr {
+  border: 1px dashed #aaa;
+  margin: 15px 0;
+}
+
+.bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+button {
+  background: teal;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+/* CHECKOUT */
+.checkout {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: white;
+  padding: 15px;
+  box-shadow: 0 -3px 10px rgba(0,0,0,0.1);
+}
+
+.checkout input {
+  width: 65%;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.row {
+  display: flex;
+  gap: 10px;
+}
+
+.total {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+.buy {
+  width: 100%;
+  margin-top: 10px;
+  padding: 14px;
+  font-size: 16px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- 🔥 BANNER (otomatis ambil banner.png) -->
+<div class="banner"></div>
+
+<div class="container">
+  <h2>Head & Shoulders Super Cool Run 2026</h2>
+
+  <!-- 5K -->
+  <div class="ticket-card">
+    <h3>5K</h3>
+    <label>*Category</label>
+    <select id="cat5k">
+      <option value="">-- Select --</option>
+      <option value="150000">Umum - Rp150.000</option>
+      <option value="130000">Pelajar - Rp130.000</option>
+    </select>
+
+    <hr>
+
+    <div class="bottom">
+      <div>
+        <small>Start From</small>
+        <div><b>Rp 150.000</b></div>
+      </div>
+      <button onclick="selectTicket('5k')">SELECT</button>
+    </div>
+  </div>
+
+  <!-- 10K -->
+  <div class="ticket-card">
+    <h3>10K</h3>
+    <label>*Category</label>
+    <select id="cat10k">
+      <option value="">-- Select --</option>
+      <option value="250000">Umum - Rp250.000</option>
+      <option value="220000">Pelajar - Rp220.000</option>
+    </select>
+
+    <hr>
+
+    <div class="bottom">
+      <div>
+        <small>Start From</small>
+        <div><b>Rp 250.000</b></div>
+      </div>
+      <button onclick="selectTicket('10k')">SELECT</button>
+    </div>
+  </div>
+</div>
+
+<!-- CHECKOUT -->
+<div class="checkout">
+  <div class="row">
+    <input type="text" id="voucher" placeholder="Ticket Code/Voucher">
+    <button onclick="applyVoucher()">CHECK</button>
+  </div>
+
+  <div class="total">
+    <span>Total</span>
+    <span id="total">Rp 0</span>
+  </div>
+
+  <button class="buy" onclick="buyTicket()">BUY TICKET</button>
+</div>
+
+<script>
+let total = 0;
+let discount = 0;
+
+function formatRupiah(num) {
+  return "Rp " + num.toLocaleString("id-ID");
+}
+
+function selectTicket(type) {
+  let value = type === '5k'
+    ? document.getElementById('cat5k').value
+    : document.getElementById('cat10k').value;
+
+  if (!value) {
+    alert("Pilih kategori dulu!");
+    return;
+  }
+
+  total += parseInt(value);
+  updateTotal();
+}
+
+function applyVoucher() {
+  let code = document.getElementById('voucher').value;
+
+  if (code === "DISKON50") {
+    discount = total * 0.5;
+    alert("Diskon 50%");
+  } else if (code === "HEMAT10") {
+    discount = 10000;
+    alert("Diskon Rp10.000");
+  } else {
+    discount = 0;
+    alert("Voucher tidak valid");
+  }
+
+  updateTotal();
+}
+
+function updateTotal() {
+  let finalTotal = total - discount;
+  if (finalTotal < 0) finalTotal = 0;
+  document.getElementById("total").innerText = formatRupiah(finalTotal);
+}
+
+function buyTicket() {
+  if (total === 0) {
+    alert("Pilih tiket dulu!");
+    return;
+  }
+
+  window.location.href = "https://jotri623.github.io/HEAD-SHOULDER-/";
+}
+</script>
+
+</body>
+</html>
